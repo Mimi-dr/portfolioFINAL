@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/GFIT/Desktop/filtre-kuzco/**)",
+      "Read(//c/Users/GFIT/Desktop/affiche TD cybersécurité/**)",
+      "Read(//c/Users/GFIT/Desktop/Mood Météo Féérique/**)",
+      "Read(//c/Users/GFIT/Downloads/**)"
+    ]
+  }
+}
