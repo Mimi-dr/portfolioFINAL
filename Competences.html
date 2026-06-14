@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compétences — Myriam Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --nav-height: 64px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #040410; color: #e8e8ff; overflow-x: hidden; }
+
+    /* NAVBAR */
+    #main-nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height); z-index: 9999; backdrop-filter: blur(16px); background: rgba(4,4,16,0.85); border-bottom: 1px solid rgba(192,132,252,0.15); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; height: 100%; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Cinzel Decorative', serif; font-size: 1.05rem; background: linear-gradient(90deg, #f9a96e, #f472b6, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 0.15rem; list-style: none; }
+    .nav-links a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(232,232,255,0.45); text-decoration: none; padding: 0.3rem 0.65rem; border-radius: 999px; transition: all 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: #c084fc; background: rgba(192,132,252,0.12); }
+    #nav-toggle { display: none; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: rgba(232,232,255,0.7); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    #mobile-menu { display: none; position: fixed; top: var(--nav-height); left: 0; right: 0; background: rgba(4,4,16,0.97); border-bottom: 1px solid rgba(192,132,252,0.15); padding: 1rem 2rem 1.5rem; z-index: 9998; flex-direction: column; gap: 0.2rem; }
+    #mobile-menu a { font-size: 0.9rem; color: rgba(232,232,255,0.7); text-decoration: none; padding: 0.55rem 0.75rem; border-radius: 8px; transition: background 0.2s; }
+    #mobile-menu a:hover { background: rgba(192,132,252,0.1); color: #c084fc; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; } .hamburger { display: flex; }
+      #nav-toggle:checked ~ #mobile-menu { display: flex; }
+      #nav-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      #nav-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+      #nav-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
+
+    /* ── HERO DASHBOARD ── */
+    .dash-hero {
+      padding-top: var(--nav-height);
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(192,132,252,0.15) 0%, transparent 65%);
+      padding: calc(var(--nav-height) + 4rem) 2rem 3rem;
+      text-align: center;
+    }
+    .eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #c084fc; margin-bottom: 0.75rem; font-family: 'DM Mono', monospace; }
+    .page-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(2rem, 6vw, 3.8rem); background: linear-gradient(135deg, #c084fc, #22d3ee, #4ade80); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 20px rgba(192,132,252,0.4)); margin-bottom: 0.75rem; }
+    .page-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: rgba(232,232,255,0.45); margin-bottom: 3rem; }
+
+    /* Compteurs stats en haut */
+    .stats-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 4rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+    .stat-box {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
+      padding: 1.25rem 2rem; text-align: center; min-width: 130px;
+      position: relative; overflow: hidden;
+    }
+    .stat-box::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, var(--sc, rgba(192,132,252,0.1)), transparent 70%); }
+    .stat-val { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 500; color: var(--sc2, #c084fc); text-shadow: 0 0 16px var(--sc2, rgba(192,132,252,0.6)); }
+    .stat-lbl { font-size: 0.7rem; color: rgba(232,232,255,0.4); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.25rem; }
+
+    /* ── MAIN LAYOUT ── */
+    .dash-layout { max-width: 1200px; margin: 0 auto; padding: 0 2rem 6rem; display: flex; flex-direction: column; gap: 3rem; }
+
+    /* Panel titre */
+    .panel-title {
+      font-family: 'Cinzel Decorative', serif; font-size: 0.8rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--pt, #c084fc); margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .panel-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--pt, rgba(192,132,252,0.4)), transparent); }
+
+    /* Barres de compétences */
+    .skills-list { display: flex; flex-direction: column; gap: 1rem; }
+    .skill-row { display: flex; flex-direction: column; gap: 0.4rem; }
+    .skill-header { display: flex; justify-content: space-between; align-items: center; }
+    .skill-name { font-size: 0.82rem; font-weight: 500; color: rgba(232,232,255,0.8); }
+    .skill-pct { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--bc, #c084fc); }
+    .bar-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+    .bar-fill {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--bc, #c084fc), var(--bc2, #22d3ee));
+      box-shadow: 0 0 8px var(--bc, rgba(192,132,252,0.5));
+      width: 0; transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: var(--bd, 0s);
+    }
+    .bar-fill.animated { width: var(--bw, 80%); }
+
+    /* Grille 2 colonnes pour les skills */
+    .skills-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 700px) { .skills-2col { grid-template-columns: 1fr; } }
+
+    /* Badges compétences BTS */
+    .bts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem; }
+    .bts-badge {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 1rem 1.25rem;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .bts-badge:hover { border-color: var(--bc, rgba(192,132,252,0.3)); background: rgba(255,255,255,0.05); }
+    .bts-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .bts-label { font-size: 0.78rem; font-weight: 500; color: rgba(232,232,255,0.75); line-height: 1.4; }
+    .bts-code { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--bc, #c084fc); margin-top: 2px; }
+
+    /* Jauges circulaires SVG */
+    .gauges-row { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+    .gauge-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .gauge-svg { width: 100px; height: 100px; transform: rotate(-90deg); }
+    .gauge-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+    .gauge-arc {
+      fill: none; stroke-width: 8; stroke-linecap: round;
+      stroke-dasharray: 251.2; stroke-dashoffset: 251.2;
+      transition: stroke-dashoffset 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: var(--gd, 0s);
+      filter: drop-shadow(0 0 6px var(--gc, #c084fc));
+    }
+    .gauge-arc.animated { stroke-dashoffset: var(--goff, 100); }
+    .gauge-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+    .gauge-container { position: relative; width: 100px; height: 100px; }
+    .gauge-pct-text { font-family: 'DM Mono', monospace; font-size: 1.1rem; font-weight: 500; color: var(--gc, #c084fc); text-shadow: 0 0 10px var(--gc, rgba(192,132,252,0.6)); }
+    .gauge-name { font-size: 0.72rem; color: rgba(232,232,255,0.5); letter-spacing: 0.05em; text-align: center; max-width: 90px; line-height: 1.3; }
+
+    /* Section téléchargement */
+    .dl-section { background: rgba(192,132,252,0.06); border: 1px solid rgba(192,132,252,0.2); border-radius: 20px; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .dl-title { font-family: 'Cinzel Decorative', serif; font-size: 0.9rem; color: #c084fc; letter-spacing: 0.06em; margin-bottom: 0.35rem; }
+    .dl-desc { font-size: 0.82rem; color: rgba(232,232,255,0.5); }
+    .btn-neon { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; padding: 0.65rem 1.75rem; border-radius: 999px; background: rgba(192,132,252,0.12); color: #c084fc; border: 1px solid rgba(192,132,252,0.4); box-shadow: 0 0 20px rgba(192,132,252,0.15); transition: all 0.25s; display: inline-block; }
+    .btn-neon:hover { background: rgba(192,132,252,0.2); box-shadow: 0 0 30px rgba(192,132,252,0.3); transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer { background: #030309; border-top: 1px solid rgba(192,132,252,0.1); padding: 2.5rem 2rem; text-align: center; }
+    .footer-logo { font-family: 'Cinzel Decorative', serif; font-size: 1rem; background: linear-gradient(90deg, #f9a96e, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.75rem; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; list-style: none; margin: 0.75rem 0; }
+    .footer-links a { font-size: 0.72rem; color: rgba(255,255,255,0.25); text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: #c084fc; }
+    footer p { font-size: 0.72rem; color: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Myriam.dev</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="presentation.html">Présentation</a></li>
+        <li><a href="entreprise.html">Entreprise</a></li>
+        <li><a href="projets.html">Projets</a></li>
+        <li><a href="veille.html">Veille</a></li>
+        <li><a href="competences.html" class="active">Compétences</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="documents.html">Documents</a></li>
+      </ul>
+      <input type="checkbox" id="nav-toggle" style="display:none" />
+      <label for="nav-toggle" class="hamburger"><span></span><span></span><span></span></label>
+    </div>
+    <div id="mobile-menu">
+      <a href="index.html">Accueil</a><a href="presentation.html">Présentation</a>
+      <a href="entreprise.html">Entreprise</a><a href="projets.html">Projets</a>
+      <a href="veille.html">Veille techno</a><a href="competences.html">Compétences</a>
+      <a href="contact.html">Contact</a>
+      <a href="documents.html">Documents</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="dash-hero">
+    <div class="eyebrow">// skill_dashboard.exe</div>
+    <h1 class="page-title">Compétences</h1>
+    <p class="page-sub">BTS SIO SLAM — Référentiel & niveaux techniques</p>
+    <div class="stats-row">
+      <div class="stat-box" style="--sc:rgba(192,132,252,0.1); --sc2:#c084fc;"><div class="stat-val">8+</div><div class="stat-lbl">Technologies</div></div>
+      <div class="stat-box" style="--sc:rgba(34,211,238,0.1); --sc2:#22d3ee;"><div class="stat-val">6+</div><div class="stat-lbl">Projets</div></div>
+      <div class="stat-box" style="--sc:rgba(74,222,128,0.1); --sc2:#4ade80;"><div class="stat-val">2</div><div class="stat-lbl">Ans de BTS</div></div>
+      <div class="stat-box" style="--sc:rgba(251,191,36,0.1); --sc2:#fbbf24;"><div class="stat-val">1</div><div class="stat-lbl">Alternance</div></div>
+    </div>
+  </div>
+
+  <div class="dash-layout">
+
+    <!-- Barres techniques -->
+    <div>
+      <div class="panel-title" style="--pt:#c084fc;">Compétences techniques</div>
+      <div class="skills-2col">
+        <div class="skills-list">
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">Power BI</span><span class="skill-pct" style="--bc:#c084fc;">85%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#c084fc; --bc2:#f472b6; --bw:85%; --bd:0.1s;"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">DAX</span><span class="skill-pct" style="--bc:#f472b6;">78%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#f472b6; --bc2:#c084fc; --bw:78%; --bd:0.2s;"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">Power Query M</span><span class="skill-pct" style="--bc:#818cf8;">70%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#818cf8; --bc2:#c084fc; --bw:70%; --bd:0.3s;"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">SQL / Snowflake</span><span class="skill-pct" style="--bc:#22d3ee;">75%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#22d3ee; --bc2:#60a5fa; --bw:75%; --bd:0.4s;"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">C# / WinForms</span><span class="skill-pct" style="--bc:#60a5fa;">70%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#60a5fa; --bc2:#22d3ee; --bw:70%; --bd:0.5s;"></div></div>
+          </div>
+        </div>
+        <div class="skills-list">
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">HTML / CSS / JS</span><span class="skill-pct" style="--bc:#4ade80;">72%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#4ade80; --bc2:#22d3ee; --bw:72%; --bd:0.6s;"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">Tailwind CSS</span><span class="skill-pct" style="--bc:#22d3ee;">68%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#22d3ee; --bc2:#4ade80; --bw:68%; --bd:0.7s;"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">Cybersécurité</span><span class="skill-pct" style="--bc:#fbbf24;">60%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#fbbf24; --bc2:#f9a96e; --bw:60%; --bd:0.8s;"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">Rust</span><span class="skill-pct" style="--bc:#f9a96e;">50%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#f9a96e; --bc2:#fbbf24; --bw:50%; --bd:0.9s;"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span class="skill-name">Docker</span><span class="skill-pct" style="--bc:#60a5fa;">60%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bc:#60a5fa; --bc2:#22d3ee; --bw:60%; --bd:1s;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jauges -->
+    <div>
+      <div class="panel-title" style="--pt:#22d3ee;">Niveaux par domaine</div>
+      <div class="gauges-row" id="gaugesRow">
+        <div class="gauge-wrap">
+          <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 100 100"><circle class="gauge-bg" cx="50" cy="50" r="40"/><circle class="gauge-arc" cx="50" cy="50" r="40" stroke="#c084fc" style="--gd:0.1s; --goff:38.9;" /></svg>
+            <div class="gauge-center"><div class="gauge-pct-text" style="--gc:#c084fc;">85%</div></div>
+          </div>
+          <div class="gauge-name">Business Intelligence</div>
+        </div>
+        <div class="gauge-wrap">
+          <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 100 100"><circle class="gauge-bg" cx="50" cy="50" r="40"/><circle class="gauge-arc" cx="50" cy="50" r="40" stroke="#22d3ee" style="--gd:0.25s; --goff:63.0;" /></svg>
+            <div class="gauge-center"><div class="gauge-pct-text" style="--gc:#22d3ee;">75%</div></div>
+          </div>
+          <div class="gauge-name">Bases de données SQL</div>
+        </div>
+        <div class="gauge-wrap">
+          <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 100 100"><circle class="gauge-bg" cx="50" cy="50" r="40"/><circle class="gauge-arc" cx="50" cy="50" r="40" stroke="#60a5fa" style="--gd:0.4s; --goff:75.4;" /></svg>
+            <div class="gauge-center"><div class="gauge-pct-text" style="--gc:#60a5fa;">70%</div></div>
+          </div>
+          <div class="gauge-name">Développement .NET</div>
+        </div>
+        <div class="gauge-wrap">
+          <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 100 100"><circle class="gauge-bg" cx="50" cy="50" r="40"/><circle class="gauge-arc" cx="50" cy="50" r="40" stroke="#4ade80" style="--gd:0.55s; --goff:75.4;" /></svg>
+            <div class="gauge-center"><div class="gauge-pct-text" style="--gc:#4ade80;">70%</div></div>
+          </div>
+          <div class="gauge-name">Web Front-end</div>
+        </div>
+        <div class="gauge-wrap">
+          <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 100 100"><circle class="gauge-bg" cx="50" cy="50" r="40"/><circle class="gauge-arc" cx="50" cy="50" r="40" stroke="#fbbf24" style="--gd:0.7s; --goff:100.5;" /></svg>
+            <div class="gauge-center"><div class="gauge-pct-text" style="--gc:#fbbf24;">60%</div></div>
+          </div>
+          <div class="gauge-name">Cybersécurité</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Référentiel BTS SLAM -->
+    <div>
+      <div class="panel-title" style="--pt:#4ade80;">Référentiel BTS SIO — SLAM</div>
+      <div class="bts-grid">
+        <div class="bts-badge" style="--bc:#c084fc;"><div class="bts-icon">🗄️</div><div><div class="bts-label">Conception et développement d'applications</div><div class="bts-code">B1.1 — B1.4</div></div></div>
+        <div class="bts-badge" style="--bc:#22d3ee;"><div class="bts-icon">🔄</div><div><div class="bts-label">Maintenance et évolution des applications</div><div class="bts-code">B2.1 — B2.3</div></div></div>
+        <div class="bts-badge" style="--bc:#4ade80;"><div class="bts-icon">🛡️</div><div><div class="bts-label">Cybersécurité des services informatiques</div><div class="bts-code">B3.1 — B3.3</div></div></div>
+        <div class="bts-badge" style="--bc:#f472b6;"><div class="bts-icon">🌐</div><div><div class="bts-label">Développement web et applications mobiles</div><div class="bts-code">B1.3 — SLAM</div></div></div>
+        <div class="bts-badge" style="--bc:#fbbf24;"><div class="bts-icon">📊</div><div><div class="bts-label">Gestion des données — SQL & BDD</div><div class="bts-code">B1.4 — B2.2</div></div></div>
+        <div class="bts-badge" style="--bc:#f9a96e;"><div class="bts-icon">📝</div><div><div class="bts-label">Documentation et gestion de projet</div><div class="bts-code">B4.1 — B4.2</div></div></div>
+        <div class="bts-badge" style="--bc:#818cf8;"><div class="bts-icon">🔒</div><div><div class="bts-label">Sécurité applicative et contrôle d'accès</div><div class="bts-code">B3.2 — SLAM</div></div></div>
+        <div class="bts-badge" style="--bc:#22d3ee;"><div class="bts-icon">🧪</div><div><div class="bts-label">Tests, recettes et validation</div><div class="bts-code">B2.3 — Recette</div></div></div>
+      </div>
+    </div>
+
+    <!-- Téléchargement -->
+    <div class="dl-section">
+      <div>
+        <div class="dl-title">Fiche de compétences complète</div>
+        <div class="dl-desc">Document officiel BTS SIO avec l'ensemble des compétences validées et les preuves associées.</div>
+      </div>
+      <a href="#" class="btn-neon">⬇ Télécharger la fiche</a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Myriam.dev</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="presentation.html">Présentation</a></li>
+      <li><a href="projets.html">Projets</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <p>© 2025 Myriam — BTS SIO SLAM · Portfolio HTML + Tailwind CSS</p>
+  </footer>
+
+  <script>
+    // Intersection Observer pour animer les barres et jauges au scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.bar-fill').forEach(b => b.classList.add('animated'));
+          entry.target.querySelectorAll('.gauge-arc').forEach(g => g.classList.add('animated'));
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.skills-2col, .gauges-row').forEach(el => observer.observe(el));
+
+    // Lien actif
+    const cur = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a, #mobile-menu a').forEach(l => {
+      if (l.getAttribute('href') === cur) l.classList.add('active');
+    });
+  </script>
+</body>
+</html>

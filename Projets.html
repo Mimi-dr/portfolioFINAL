@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projets — Myriam Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --nav-height: 64px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #050510; color: #f8f8ff; overflow-x: hidden; }
+
+    /* NAVBAR */
+    #main-nav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height);
+      z-index: 9999; backdrop-filter: blur(16px);
+      background: rgba(5,5,16,0.8); border-bottom: 1px solid rgba(192,132,252,0.15);
+    }
+    .nav-inner { max-width: 1280px; margin: 0 auto; height: 100%; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Cinzel Decorative', serif; font-size: 1.05rem; background: linear-gradient(90deg, #f9a96e, #f472b6, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 0.15rem; list-style: none; }
+    .nav-links a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(248,248,255,0.5); text-decoration: none; padding: 0.3rem 0.65rem; border-radius: 999px; transition: color 0.2s, background 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: #c084fc; background: rgba(192,132,252,0.12); }
+    #nav-toggle { display: none; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: rgba(248,248,255,0.7); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    #mobile-menu { display: none; position: fixed; top: var(--nav-height); left: 0; right: 0; background: rgba(5,5,16,0.97); border-bottom: 1px solid rgba(192,132,252,0.15); padding: 1rem 2rem 1.5rem; z-index: 9998; flex-direction: column; gap: 0.2rem; }
+    #mobile-menu a { font-size: 0.9rem; color: rgba(248,248,255,0.7); text-decoration: none; padding: 0.55rem 0.75rem; border-radius: 8px; transition: background 0.2s; }
+    #mobile-menu a:hover { background: rgba(192,132,252,0.1); color: #c084fc; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; } .hamburger { display: flex; }
+      #nav-toggle:checked ~ #mobile-menu { display: flex; }
+      #nav-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      #nav-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+      #nav-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
+
+    /* ── HERO ── */
+    .page-hero {
+      padding-top: var(--nav-height);
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(192,132,252,0.2) 0%, transparent 65%);
+      padding-bottom: 4rem; text-align: center;
+    }
+    .hero-inner { max-width: 900px; margin: 0 auto; padding: 4rem 2rem 0; }
+    .eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #c084fc; margin-bottom: 1rem; }
+    .page-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 6vw, 4rem); line-height: 1.1;
+      background: linear-gradient(135deg, #e879f9, #c084fc, #22d3ee);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 4px 20px rgba(192,132,252,0.35));
+    }
+    .page-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: rgba(248,248,255,0.5); letter-spacing: 0.06em; margin-bottom: 2.5rem; }
+
+    /* Filtres */
+    .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .filter-btn {
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.45rem 1.25rem; border-radius: 999px; cursor: pointer; border: none;
+      background: rgba(255,255,255,0.05); color: rgba(248,248,255,0.5);
+      border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s;
+    }
+    .filter-btn:hover { background: rgba(255,255,255,0.08); color: rgba(248,248,255,0.85); }
+    .filter-btn.active-all  { background: rgba(192,132,252,0.15); color: #c084fc; border-color: rgba(192,132,252,0.4); box-shadow: 0 0 12px rgba(192,132,252,0.2); }
+    .filter-btn.active-pro  { background: rgba(192,132,252,0.15); color: #c084fc; border-color: rgba(192,132,252,0.4); box-shadow: 0 0 12px rgba(192,132,252,0.2); }
+    .filter-btn.active-ecole { background: rgba(34,211,238,0.12); color: #22d3ee; border-color: rgba(34,211,238,0.4); box-shadow: 0 0 12px rgba(34,211,238,0.2); }
+    .filter-btn.active-perso { background: rgba(244,114,182,0.12); color: #f472b6; border-color: rgba(244,114,182,0.4); box-shadow: 0 0 12px rgba(244,114,182,0.2); }
+
+    /* ── GRILLE PROJETS ── */
+    .projects-section { padding: 3rem 2rem 6rem; max-width: 1200px; margin: 0 auto; }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+
+    /* Carte projet */
+    .proj-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px; overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      cursor: pointer; position: relative;
+    }
+    .proj-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--neon, rgba(192,132,252,0.5));
+      box-shadow: 0 0 30px var(--neon-glow, rgba(192,132,252,0.12));
+    }
+    .proj-band { height: 3px; background: linear-gradient(90deg, var(--neon, #c084fc), var(--neon2, #22d3ee)); box-shadow: 0 0 12px var(--neon, #c084fc); }
+    .proj-cat {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.25rem 0.65rem; border-radius: 999px;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+      color: var(--neon, #c084fc); border: 1px solid var(--neon, rgba(192,132,252,0.4));
+    }
+    .proj-body { padding: 1.5rem; }
+    .proj-icon { font-size: 2.2rem; margin-bottom: 0.75rem; }
+    .proj-title { font-family: 'Cinzel Decorative', serif; font-size: 0.85rem; color: var(--neon, #c084fc); letter-spacing: 0.04em; margin-bottom: 0.5rem; }
+    .proj-desc { font-size: 0.82rem; color: rgba(248,248,255,0.5); line-height: 1.65; margin-bottom: 1rem; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .p-tag { font-size: 0.68rem; padding: 0.22rem 0.6rem; border-radius: 999px; background: rgba(255,255,255,0.05); color: rgba(248,248,255,0.45); border: 1px solid rgba(255,255,255,0.07); }
+    .proj-detail {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--neon, #c084fc);
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      opacity: 0; transform: translateX(-6px);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .proj-card:hover .proj-detail { opacity: 1; transform: none; }
+    .proj-card.hidden { display: none; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(5,5,16,0.92); backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-panel {
+      background: #0c0c1e;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px; overflow: hidden;
+      width: 100%; max-width: 700px;
+      max-height: 90vh; display: flex; flex-direction: column;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      position: relative;
+    }
+    .modal-overlay.open .modal-panel { transform: translateY(0) scale(1); }
+
+    .modal-band { height: 4px; flex-shrink: 0; }
+
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(248,248,255,0.6); cursor: pointer;
+      width: 32px; height: 32px; border-radius: 50%;
+      font-size: 0.85rem; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s; z-index: 10;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.12); color: #f8f8ff; }
+
+    .modal-scroll { overflow-y: auto; flex: 1; padding: 2rem 2rem 2.5rem; }
+    .modal-scroll::-webkit-scrollbar { width: 4px; }
+    .modal-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+    .modal-header { margin-bottom: 2rem; }
+    .modal-icon-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+    .modal-big-icon { font-size: 2.8rem; }
+    .modal-cat-pill {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.25rem 0.75rem; border-radius: 999px;
+      background: rgba(0,0,0,0.3);
+    }
+    .modal-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1rem, 3vw, 1.4rem); line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .modal-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .modal-tags .p-tag { font-size: 0.72rem; }
+
+    .modal-section { margin-bottom: 1.75rem; }
+    .modal-section-label {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(248,248,255,0.3); margin-bottom: 0.65rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .modal-section p, .modal-section li {
+      font-size: 0.85rem; color: rgba(248,248,255,0.65); line-height: 1.75;
+    }
+    .modal-section ul { padding-left: 1.2rem; }
+    .modal-section li { margin-bottom: 0.3rem; }
+
+    .modal-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem; }
+    .modal-link-btn {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.55rem 1.25rem; border-radius: 999px; text-decoration: none;
+      border: 1px solid; transition: background 0.2s, box-shadow 0.2s;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .modal-link-btn:hover { box-shadow: 0 0 20px currentColor; }
+
+    @media (max-width: 600px) {
+      .modal-scroll { padding: 1.5rem 1.25rem 2rem; }
+      .modal-panel { border-radius: 20px; }
+    }
+
+    /* FOOTER */
+    footer { background: #030308; border-top: 1px solid rgba(192,132,252,0.1); padding: 2.5rem 2rem; text-align: center; }
+    .footer-logo { font-family: 'Cinzel Decorative', serif; font-size: 1rem; background: linear-gradient(90deg, #f9a96e, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.75rem; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; list-style: none; margin: 0.75rem 0; }
+    .footer-links a { font-size: 0.72rem; color: rgba(255,255,255,0.25); text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: #c084fc; }
+    footer p { font-size: 0.72rem; color: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Myriam.dev</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="presentation.html">Présentation</a></li>
+        <li><a href="entreprise.html">Entreprise</a></li>
+        <li><a href="projets.html" class="active">Projets</a></li>
+        <li><a href="veille.html">Veille</a></li>
+        <li><a href="competences.html">Compétences</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="documents.html">Documents</a></li>
+      </ul>
+      <input type="checkbox" id="nav-toggle" style="display:none" />
+      <label for="nav-toggle" class="hamburger"><span></span><span></span><span></span></label>
+    </div>
+    <div id="mobile-menu">
+      <a href="index.html">Accueil</a><a href="presentation.html">Présentation</a>
+      <a href="entreprise.html">Entreprise</a><a href="projets.html">Projets</a>
+      <a href="veille.html">Veille techno</a><a href="competences.html">Compétences</a>
+      <a href="contact.html">Contact</a>
+      <a href="documents.html">Documents</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Portfolio</div>
+      <h1 class="page-title">Mes Projets</h1>
+      <p class="page-sub">Pro · École · Perso — du code avec âme</p>
+      <div class="filters">
+        <button class="filter-btn active-all" data-cat="all">✦ Tous</button>
+        <button class="filter-btn" data-cat="pro">💼 Professionnel</button>
+        <button class="filter-btn" data-cat="ecole">🎓 École</button>
+        <button class="filter-btn" data-cat="perso">✨ Personnel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRILLE -->
+  <div class="projects-section">
+    <div class="projects-grid" id="projectsGrid">
+
+      <!-- PRO 1 -->
+      <div class="proj-card" data-cat="pro" data-project="vb-logistique" style="--neon:#c084fc; --neon2:#e879f9; --neon-glow:rgba(192,132,252,0.12);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">Pro</div>
+        <div class="proj-body">
+          <div class="proj-icon">📊</div>
+          <div class="proj-title">Voiture Balai Logistique</div>
+          <div class="proj-desc">Dashboard Power BI de réconciliation des données de réception logistique entre Cognos et Power BI. Mesures DAX, Power Query M et validation des écarts.</div>
+          <div class="proj-tags">
+            <span class="p-tag">Power BI</span><span class="p-tag">DAX</span><span class="p-tag">Power Query M</span><span class="p-tag">Cognos</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- PRO 2 -->
+      <div class="proj-card" data-cat="pro" data-project="vb-rh" style="--neon:#c084fc; --neon2:#818cf8; --neon-glow:rgba(192,132,252,0.12);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">Pro</div>
+        <div class="proj-body">
+          <div class="proj-icon">👥</div>
+          <div class="proj-title">Voiture Balai RH — WD Acciline</div>
+          <div class="proj-desc">Outil de comparaison des données RH entre Workday et Acciline pour l'équipe SST. Pages Établissements, Centres et Collaborateurs, avec enrichissement géographique.</div>
+          <div class="proj-tags">
+            <span class="p-tag">Power BI</span><span class="p-tag">Workday</span><span class="p-tag">Acciline</span><span class="p-tag">SharePoint</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- PRO 3 -->
+      <div class="proj-card" data-cat="pro" data-project="cahier-recette" style="--neon:#22d3ee; --neon2:#60a5fa; --neon-glow:rgba(34,211,238,0.1);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">Pro</div>
+        <div class="proj-body">
+          <div class="proj-icon">🔄</div>
+          <div class="proj-title">Cahier de recette — Migration EXP RECEP</div>
+          <div class="proj-desc">Rédaction et mise en forme du cahier de recette pour la migration du module réception de Cognos vers Power BI. Validation des données et analyse des anomalies de température.</div>
+          <div class="proj-tags">
+            <span class="p-tag">Recette</span><span class="p-tag">Word DOCX</span><span class="p-tag">Validation</span><span class="p-tag">Anomalies</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- ÉCOLE 1 -->
+      <div class="proj-card" data-cat="ecole" data-project="gsb-ordonnance" style="--neon:#22d3ee; --neon2:#4ade80; --neon-glow:rgba(34,211,238,0.1);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">École</div>
+        <div class="proj-body">
+          <div class="proj-icon">💊</div>
+          <div class="proj-title">GSB Ordonnance (C# WinForms)</div>
+          <div class="proj-desc">Application de gestion d'ordonnances en C# WinForms avec architecture MVC. 5 formulaires (patients, ordonnances, médecins), migration SQLite → MySQL sur Docker. Documentation complète sur Notion.</div>
+          <div class="proj-tags">
+            <span class="p-tag">C#</span><span class="p-tag">WinForms</span><span class="p-tag">MySQL</span><span class="p-tag">Docker</span><span class="p-tag">MVC</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- ÉCOLE 2 -->
+      <div class="proj-card" data-cat="ecole" data-project="cyber-audit" style="--neon:#f472b6; --neon2:#c084fc; --neon-glow:rgba(244,114,182,0.1);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">École</div>
+        <div class="proj-body">
+          <div class="proj-icon">🔐</div>
+          <div class="proj-title">Audit Cybersécurité Collège Saint-Exupéry</div>
+          <div class="proj-desc">Projet d'équipe (Myriam, Yann, Xavier) : rapport d'audit de sécurité pour un collège fictif, présentation HTML interactive futuriste, script batch de sauvegarde Windows et supports de sensibilisation.</div>
+          <div class="proj-tags">
+            <span class="p-tag">Cybersécurité</span><span class="p-tag">HTML</span><span class="p-tag">Batch</span><span class="p-tag">Audit</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- ÉCOLE 3 -->
+      <div class="proj-card" data-cat="ecole" data-project="ver-rust" style="--neon:#fbbf24; --neon2:#f9a96e; --neon-glow:rgba(251,191,36,0.1);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">École</div>
+        <div class="proj-body">
+          <div class="proj-icon">🦀</div>
+          <div class="proj-title">Ver réseau Rust</div>
+          <div class="proj-desc">Développement d'un ver réseau en Rust dans un environnement Docker pour le cours de Josselyn. Rapport Word et déploiement de projets web sur GitHub Pages.</div>
+          <div class="proj-tags">
+            <span class="p-tag">Rust</span><span class="p-tag">Docker</span><span class="p-tag">Réseau</span><span class="p-tag">GitHub Pages</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- PERSO 1 -->
+      <div class="proj-card" data-cat="perso" data-project="portfolio" style="--neon:#f472b6; --neon2:#fbbf24; --neon-glow:rgba(244,114,182,0.1);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">Perso</div>
+        <div class="proj-body">
+          <div class="proj-icon">🌐</div>
+          <div class="proj-title">Portfolio BTS SIO</div>
+          <div class="proj-desc">Ce portfolio ! Développé en HTML + Tailwind CSS, multi-pages avec 7 thèmes distincts. Animations CSS, parallax, effets néon et composants interactifs.</div>
+          <div class="proj-tags">
+            <span class="p-tag">HTML</span><span class="p-tag">Tailwind CSS</span><span class="p-tag">JavaScript</span><span class="p-tag">CSS Animations</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- PERSO 2 -->
+      <div class="proj-card" data-cat="perso" data-project="tierlist" style="--neon:#4ade80; --neon2:#22d3ee; --neon-glow:rgba(74,222,128,0.1);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">Perso</div>
+        <div class="proj-body">
+          <div class="proj-icon">🎮</div>
+          <div class="proj-title">Tier List Generator</div>
+          <div class="proj-desc">Clone de TierMaker.com développé from scratch en JavaScript natif. Interface drag-and-drop avec 101 affiches de films, upload d'images personnalisées et compteur par tier.</div>
+          <div class="proj-tags">
+            <span class="p-tag">HTML</span><span class="p-tag">JavaScript</span><span class="p-tag">Drag & Drop API</span><span class="p-tag">FileReader</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- PERSO 3 — Filtre Kuzco (nouveau) -->
+      <div class="proj-card" data-cat="perso" data-project="filtre-kuzco" style="--neon:#f9a96e; --neon2:#fbbf24; --neon-glow:rgba(249,169,110,0.1);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">Perso</div>
+        <div class="proj-body">
+          <div class="proj-icon">🦙</div>
+          <div class="proj-title">Filtre Kuzco</div>
+          <div class="proj-desc">Filtre de réalité augmentée en temps réel qui transforme le visage en lama (ou en Kuzco avec couronne impériale) via la webcam. Détection de 468 points faciaux avec MediaPipe Face Mesh.</div>
+          <div class="proj-tags">
+            <span class="p-tag">JavaScript</span><span class="p-tag">MediaPipe</span><span class="p-tag">Canvas 2D</span><span class="p-tag">AR</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+      <!-- PERSO 4 — Mood Météo Féérique (nouveau) -->
+      <div class="proj-card" data-cat="perso" data-project="mood-meteo" style="--neon:#f472b6; --neon2:#a78bfa; --neon-glow:rgba(244,114,182,0.1);">
+        <div class="proj-band"></div>
+        <div class="proj-cat">Perso</div>
+        <div class="proj-body">
+          <div class="proj-icon">🌈</div>
+          <div class="proj-title">Mood Météo Féérique</div>
+          <div class="proj-desc">Dashboard de mood collaboratif et féérique pour 3 amies. Chacune met à jour son humeur sur un slider de 0 à 100, visible en temps réel par toutes via Firebase Realtime Database.</div>
+          <div class="proj-tags">
+            <span class="p-tag">JavaScript</span><span class="p-tag">Firebase</span><span class="p-tag">Canvas</span><span class="p-tag">Realtime</span>
+          </div>
+          <span class="proj-detail">Voir le détail →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── MODAL ── -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-panel" id="modalPanel">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-band" id="modalBand"></div>
+      <div class="modal-scroll">
+        <div class="modal-header">
+          <div class="modal-icon-row">
+            <div class="modal-big-icon" id="modalIcon"></div>
+            <div class="modal-cat-pill" id="modalCat"></div>
+          </div>
+          <h2 class="modal-title" id="modalTitle"></h2>
+          <div class="modal-tags" id="modalTags"></div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">À propos</div>
+          <div id="modalAbout"></div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Comment c'est réalisé</div>
+          <div id="modalHow"></div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Ce que ça contient</div>
+          <div id="modalContains"></div>
+        </div>
+        <div class="modal-links" id="modalLinks"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Myriam.dev</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="presentation.html">Présentation</a></li>
+      <li><a href="projets.html">Projets</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <p>© 2025 Myriam — BTS SIO SLAM · Portfolio HTML + Tailwind CSS</p>
+  </footer>
+
+  <script>
+    // ── DONNÉES PROJETS ──────────────────────────────────────────
+    const PROJECTS = {
+      'vb-logistique': {
+        icon: '📊', cat: 'Professionnel', catColor: '#c084fc',
+        neon: '#c084fc', neon2: '#e879f9',
+        title: 'Voiture Balai Logistique',
+        tags: ['Power BI', 'DAX', 'Power Query M', 'Cognos', 'Transgourmet'],
+        about: `<p>Dashboard Power BI développé en stage chez Transgourmet, dont l'objectif est de <strong>réconcilier les données de réception logistique</strong> entre deux systèmes : Cognos (l'ancien outil de reporting) et Power BI (le nouveau). Il permet à l'équipe logistique de détecter et d'analyser les écarts entre les deux sources de données pendant la période de migration.</p>`,
+        how: `<ul>
+          <li>Connexion aux sources de données Cognos et Power BI via les connecteurs natifs Power BI Desktop</li>
+          <li>Transformation et nettoyage des données avec <strong>Power Query M</strong> (jointures, typage, colonnes calculées)</li>
+          <li>Développement des mesures de comparaison en <strong>DAX</strong> : sommes conditionnelles, calculs d'écarts en valeur et en pourcentage</li>
+          <li>Conception de la mise en page des rapports et des visuels Power BI</li>
+          <li>Tests de validation avec les données réelles de production</li>
+        </ul>`,
+        contains: `<ul>
+          <li>Tableau de comparaison des quantités reçues Cognos vs Power BI par produit et site</li>
+          <li>Indicateurs d'écarts en valeur absolue et en pourcentage</li>
+          <li>Filtres dynamiques par période, établissement et famille de produits</li>
+          <li>Mesures DAX personnalisées pour le calcul des réconciliations</li>
+          <li>Mise en forme conditionnelle pour mettre en évidence les écarts critiques</li>
+        </ul>`,
+        links: [{ label: 'Voir la page entreprise', href: 'entreprise.html', internal: true }]
+      },
+
+      'vb-rh': {
+        icon: '👥', cat: 'Professionnel', catColor: '#c084fc',
+        neon: '#c084fc', neon2: '#818cf8',
+        title: 'Voiture Balai RH — WD Acciline',
+        tags: ['Power BI', 'Workday', 'Acciline', 'SharePoint', 'SST'],
+        about: `<p>Outil Power BI de comparaison des données RH entre <strong>Workday</strong> (le SIRH du groupe Transgourmet) et <strong>Acciline</strong> (logiciel de gestion Santé, Sécurité au Travail), destiné à l'équipe SST. Permet d'identifier les divergences entre les deux systèmes pour garantir la cohérence des données collaborateurs.</p>`,
+        how: `<ul>
+          <li>Connexion aux données Workday et Acciline exportées via <strong>SharePoint</strong></li>
+          <li>Développement de <strong>3 pages de rapport</strong> (Établissements, Centres, Collaborateurs)</li>
+          <li>Enrichissement géographique pour visualiser les établissements sur une carte Power BI</li>
+          <li>Mise en place de logiques de rapprochement des données avec Power Query M</li>
+          <li>Collaboration avec l'équipe SST pour identifier les besoins métier</li>
+        </ul>`,
+        contains: `<ul>
+          <li><strong>Page Établissements</strong> : comparaison des effectifs par site entre Workday et Acciline</li>
+          <li><strong>Page Centres</strong> : focus sur les centres logistiques et leurs données SST</li>
+          <li><strong>Page Collaborateurs</strong> : comparaison nominative des données RH</li>
+          <li>Carte géographique des établissements</li>
+          <li>Indicateurs de divergence colorés pour une lecture rapide</li>
+        </ul>`,
+        links: [{ label: 'Voir la page entreprise', href: 'entreprise.html', internal: true }]
+      },
+
+      'cahier-recette': {
+        icon: '🔄', cat: 'Professionnel', catColor: '#22d3ee',
+        neon: '#22d3ee', neon2: '#60a5fa',
+        title: 'Cahier de recette — Migration EXP RECEP',
+        tags: ['Recette', 'Word DOCX', 'Validation', 'Anomalies', 'Migration'],
+        about: `<p>Document de validation rédigé pour accompagner la <strong>migration du module réception (EXP RECEP) de Cognos vers Power BI</strong> chez Transgourmet. Un cahier de recette définit les scénarios de test à réaliser pour s'assurer que le nouveau rapport Power BI produit des données strictement identiques à l'ancien Cognos, avant le basculement en production.</p>`,
+        how: `<ul>
+          <li>Rédaction et mise en forme du document <strong>Word DOCX</strong> selon les standards internes Transgourmet</li>
+          <li>Définition des scénarios de test par fonctionnalité (réception par date, par site, par produit)</li>
+          <li>Spécification des critères de validation et des seuils d'écart tolérés</li>
+          <li>Section dédiée à l'<strong>analyse des anomalies de température</strong> des camions frigorifiques</li>
+          <li>Définition de la procédure de signalement et de suivi des anomalies détectées</li>
+        </ul>`,
+        contains: `<ul>
+          <li>Scénarios de tests numérotés couvrant toutes les fonctionnalités du module réception</li>
+          <li>Tableaux de validation avec colonnes : valeur Cognos / valeur Power BI / écart / statut</li>
+          <li>Section anomalies de température : seuils réglementaires et conduite à tenir</li>
+          <li>Fiche de suivi des non-conformités détectées pendant la recette</li>
+          <li>Procédure de go/no-go pour la validation de la mise en production</li>
+        </ul>`,
+        links: [{ label: 'Voir la page entreprise', href: 'entreprise.html', internal: true }]
+      },
+
+      'gsb-ordonnance': {
+        icon: '💊', cat: 'École', catColor: '#22d3ee',
+        neon: '#22d3ee', neon2: '#4ade80',
+        title: 'GSB Ordonnance (C# WinForms)',
+        tags: ['C#', 'WinForms', 'MySQL', 'Docker', 'MVC', 'SQLite'],
+        about: `<p>Application de bureau Windows développée en BTS SIO pour le cabinet médical fictif <strong>GSB (Galaxy Swiss Bourdin)</strong>. Permet de gérer les ordonnances, les patients et les médecins via une interface graphique Windows Forms en C#. Projet développé en utilisant le patron de conception MVC.</p>`,
+        how: `<ul>
+          <li>Développement en <strong>C# .NET</strong> avec Windows Forms (WinForms)</li>
+          <li>Architecture <strong>MVC</strong> (Modèle-Vue-Contrôleur) avec séparation stricte des couches</li>
+          <li>Base de données <strong>SQLite</strong> en local puis migration vers <strong>MySQL sur Docker</strong> pour simuler un environnement de production</li>
+          <li>Création de 5 formulaires (Form) distincts</li>
+          <li>Documentation complète du projet rédigée sur <strong>Notion</strong></li>
+        </ul>`,
+        contains: `<ul>
+          <li>Formulaire <strong>Patients</strong> : création, modification, recherche et suppression</li>
+          <li>Formulaire <strong>Médecins</strong> : gestion du référentiel des praticiens</li>
+          <li>Formulaire <strong>Ordonnances</strong> : liaison patient/médecin, date, médicaments</li>
+          <li>Formulaire de <strong>connexion</strong> avec authentification</li>
+          <li>Couche d'accès aux données (DAO) avec requêtes SQL paramétrées</li>
+          <li>Environnement MySQL containerisé avec Docker Compose</li>
+        </ul>`,
+        links: [{ label: 'GitHub', href: 'https://github.com/mimi-dr', internal: false }]
+      },
+
+      'cyber-audit': {
+        icon: '🔐', cat: 'École', catColor: '#f472b6',
+        neon: '#f472b6', neon2: '#c084fc',
+        title: 'Audit Cybersécurité Collège Saint-Exupéry',
+        tags: ['Cybersécurité', 'HTML/CSS/JS', 'Audit', 'Batch', 'Sensibilisation'],
+        about: `<p>Projet d'équipe réalisé à trois (<strong>Myriam, Yann, Xavier</strong>) pour le cours de cybersécurité BTS SIO. Simulation d'un audit complet pour le Collège Saint-Exupéry (fictif, basé à Tours) ayant subi une attaque réelle le 15 janvier 2024 : phishing → Infostealer → exfiltration des données de <strong>823 élèves</strong> en 4 minutes.</p>`,
+        how: `<ul>
+          <li>Présentation interactive développée en <strong>HTML/CSS/JavaScript pur</strong>, 4 pages distinctes</li>
+          <li>Curseur personnalisé, canvas de particules animées, animations de révélation de texte</li>
+          <li>Timeline de l'attaque animée avec timestamps réels (06:17:23 → 07:07:02)</li>
+          <li>Quiz de sensibilisation interactif (5 questions) en JavaScript pur</li>
+          <li>Testeur de robustesse de mot de passe avec jauges en temps réel</li>
+          <li>Script <strong>Batch Windows</strong> de sauvegarde automatisée</li>
+          <li>Affiche anti-phishing au format A4 imprimable</li>
+        </ul>`,
+        contains: `<ul>
+          <li><strong>Page accueil</strong> : reconstitution de l'attaque en 4 minutes, stats (11 failles critiques, 19 actions correctives)</li>
+          <li><strong>Bonnes pratiques</strong> : onglets Mots de passe / Phishing / Usages / Incident, testeur de mot de passe intégré</li>
+          <li><strong>Affiche A4</strong> : 5 signes d'un email de phishing, prête à imprimer</li>
+          <li><strong>Plan de communication</strong> : calendrier annuel de sensibilisation septembre–mai</li>
+          <li>Email de phishing interactif simulé (celui du 15 janvier 2024)</li>
+          <li>Contacts d'urgence cybersécurité (cybermalveillance.gouv.fr, CNIL, DANE)</li>
+        </ul>`,
+        links: [{ label: 'GitHub', href: 'https://github.com/mimi-dr', internal: false }]
+      },
+
+      'ver-rust': {
+        icon: '🦀', cat: 'École', catColor: '#fbbf24',
+        neon: '#fbbf24', neon2: '#f9a96e',
+        title: 'Ver réseau Rust',
+        tags: ['Rust', 'Docker', 'Réseau', 'Sécurité', 'GitHub Pages'],
+        about: `<p>Développement d'un <strong>ver réseau (worm)</strong> en langage Rust dans le cadre du cours de sécurité réseau de Josselyn (BTS SIO). Un worm est un malware capable de se propager automatiquement d'une machine à l'autre sur un réseau, sans action humaine. Projet <strong>purement éducatif</strong> réalisé dans un environnement Docker complètement isolé d'Internet.</p>`,
+        how: `<ul>
+          <li>Développement en <strong>Rust</strong> : langage choisi pour ses performances et sa gestion mémoire sécurisée</li>
+          <li>Environnement <strong>Docker</strong> multi-conteneurs simulant un réseau interne isolé (plusieurs "machines" virtuelles)</li>
+          <li>Le worm scanne les hôtes du réseau local, tente des connexions et se copie automatiquement</li>
+          <li>Rédaction d'un <strong>rapport Word</strong> documentant le fonctionnement, le code et les contre-mesures</li>
+          <li>Déploiement des projets web du TP sur <strong>GitHub Pages</strong></li>
+        </ul>`,
+        contains: `<ul>
+          <li>Programme Rust de propagation réseau (scan d'hôtes, connexion, auto-copie)</li>
+          <li><strong>Dockerfile</strong> et docker-compose pour l'environnement de test isolé</li>
+          <li>Rapport Word : architecture du worm, code annoté, scénarios d'attaque, contre-mesures</li>
+          <li>Déploiement GitHub Pages des projets web associés au TP</li>
+        </ul>`,
+        links: [{ label: 'GitHub Pages', href: 'https://mimi-dr.github.io', internal: false }]
+      },
+
+      'portfolio': {
+        icon: '🌐', cat: 'Personnel', catColor: '#f472b6',
+        neon: '#f472b6', neon2: '#fbbf24',
+        title: 'Portfolio BTS SIO',
+        tags: ['HTML', 'Tailwind CSS', 'JavaScript', 'CSS Animations', 'Responsive'],
+        about: `<p>Ce portfolio personnel développé <strong>from scratch</strong> en HTML/CSS/JavaScript, sans aucun framework back-end ni générateur de site statique. Créé pour valoriser mes compétences dans le cadre du BTS SIO option SLAM. Identité visuelle cohérente sur toutes les pages : thème dark, palette néon violet/rose/cyan, typographie soignée.</p>`,
+        how: `<ul>
+          <li><strong>8 pages HTML</strong> distinctes avec un design system partagé</li>
+          <li><strong>Tailwind CSS CDN</strong> pour les utilitaires de mise en page, complété par du CSS custom pour les effets avancés</li>
+          <li>Animations CSS pures : parallax, reveals au scroll, effets néon glow, hovers</li>
+          <li>JavaScript vanilla pour les interactions (filtres, navigation mobile, timelines)</li>
+          <li>Polices Google Fonts : Cinzel Decorative (titres), Cormorant Garamond (italiques), DM Sans (corps)</li>
+          <li>Design responsive avec hamburger menu et adaptation mobile</li>
+        </ul>`,
+        contains: `<ul>
+          <li><strong>Accueil</strong> : hero avec particules, sections présentation rapide</li>
+          <li><strong>Présentation</strong> : parcours, compétences, centres d'intérêt</li>
+          <li><strong>Entreprise</strong> : contexte du stage Transgourmet, missions détaillées</li>
+          <li><strong>Projets</strong> (cette page !) : grille filtrée, modales descriptives</li>
+          <li><strong>Veille technologique</strong> : articles de veille avec sources</li>
+          <li><strong>Compétences</strong> : référentiel BTS SIO SLAM</li>
+          <li><strong>Contact</strong> : formulaire et liens sociaux</li>
+          <li><strong>Documents</strong> : CV, attestations, livrables</li>
+        </ul>`,
+        links: [{ label: 'Tu y es déjà !', href: 'index.html', internal: true }]
+      },
+
+      'tierlist': {
+        icon: '🎮', cat: 'Personnel', catColor: '#4ade80',
+        neon: '#4ade80', neon2: '#22d3ee',
+        title: 'Tier List Generator',
+        tags: ['HTML', 'JavaScript', 'Drag & Drop API', 'FileReader', 'CSS Animations'],
+        about: `<p>Clone de <strong>TierMaker.com</strong> développé from scratch pour le TP d'introduction au JavaScript BTS SIO SLAM (mars 2026). Permet de classer visuellement des éléments par tiers de <strong>S (meilleur) à D (moins bon)</strong> via du glisser-déposer à la souris. Thème choisi : les films, avec 101 affiches fournies dans un dossier <code>movies-top100-real</code>. Design sombre violet/rose inspiré du jeu Kamui.</p>`,
+        how: `<ul>
+          <li><strong>HTML/CSS/JavaScript natif</strong>, aucun framework, aucune dépendance externe</li>
+          <li><strong>API Drag & Drop HTML5</strong> avec 6 événements : dragstart, dragend, dragover, dragenter, dragleave, drop</li>
+          <li>Mécanisme du <strong>dataTransfer</strong> ("sac à dos") pour transmettre l'identifiant de l'image entre les zones</li>
+          <li><strong>FileReader API</strong> pour l'upload d'images : lecture asynchrone, conversion en URL base64, création dynamique de balises img</li>
+          <li>Compteurs de tiers via <strong>attributs data-*</strong> mis à jour en JS, affichage via pseudo-élément CSS <code>::after</code></li>
+          <li>Lissage visuel : animation <code>popIn</code> (scale 0.6 → 1) à chaque dépôt, glow rose au survol</li>
+        </ul>`,
+        contains: `<ul>
+          <li>5 tiers (S, A, B, C, D) avec zones de dépôt colorées et backdrop-filter blur</li>
+          <li>Pool de <strong>101 affiches de films</strong> (12 Angry Men, Inception, Parasite, The Matrix…)</li>
+          <li>Drag & drop fluide entre les tiers et le pool</li>
+          <li>Double-clic sur une image pour la renvoyer dans le pool</li>
+          <li>Bouton <strong>Reset</strong> avec boîte de confirmation + animation de bordure rose</li>
+          <li>Upload d'images personnalisées depuis l'ordinateur (multi-fichiers)</li>
+          <li>Compteur d'images affiché dans chaque tier</li>
+          <li>Tooltip avec le titre du film au survol (CSS <code>content: attr(alt)</code>)</li>
+        </ul>`,
+        links: [{ label: 'GitHub Pages', href: 'https://mimi-dr.github.io', internal: false }]
+      },
+
+      'filtre-kuzco': {
+        icon: '🦙', cat: 'Personnel', catColor: '#f9a96e',
+        neon: '#f9a96e', neon2: '#fbbf24',
+        title: 'Filtre Kuzco',
+        tags: ['JavaScript', 'MediaPipe Face Mesh', 'Canvas 2D', 'AR', 'Webcam'],
+        about: `<p>Filtre de <strong>réalité augmentée en temps réel</strong> qui transforme le visage de l'utilisateur en personnage de dessin animé inspiré du film <em>"Kuzco l'Empereur Mégalo"</em>. Deux modes disponibles : <strong>Lama</strong> (transformation complète en lama doré) et <strong>Kuzco</strong> (lama avec couronne impériale, rubis et boucles d'oreilles). Supporte jusqu'à 4 visages simultanément.</p>`,
+        how: `<ul>
+          <li><strong>MediaPipe Face Mesh</strong> (bibliothèque Google) : détecte <strong>468 points de repère</strong> précis sur le visage en temps réel via la webcam HD (1280×720)</li>
+          <li><strong>Canvas 2D JavaScript</strong> : superposition des éléments dessinés sur le flux vidéo en miroir</li>
+          <li><strong>Lissage des coordonnées</strong> (facteur S = 0.4) par interpolation linéaire entre les frames pour éviter les tremblements</li>
+          <li>Algorithme du peintre (<em>painter's algorithm</em>) pour l'ordre de dessin arrière → avant</li>
+          <li>Utilisation des iris (points 468/473) pour le suivi oculaire précis</li>
+          <li>Rendu en <strong>mode miroir</strong> (flip horizontal du canvas)</li>
+        </ul>`,
+        contains: `<ul>
+          <li><strong>Mode Lama</strong> : fourrure avec dégradé radial, oreilles détaillées (intérieur + reflet), museau oval, gros nez avec narines et reflet, yeux cartoon (iris + pupille + 2 reflets), sourcils, touffe de poils sur le crâne</li>
+          <li><strong>Mode Kuzco</strong> : tout le mode lama + couronne dorée (dégradé linéaire, bandeau bas, rubis central avec reflet, 2 émeraudes latérales, saphir au sommet) + boucles d'oreilles pendantes</li>
+          <li>Boutons de contrôle : 🦙 Lama / 👑 Kuzco / ✕ Off</li>
+          <li>Détection multi-visages (jusqu'à 4 simultanément)</li>
+          <li>Gestion des erreurs webcam (message si accès refusé)</li>
+        </ul>`,
+        links: []
+      },
+
+      'mood-meteo': {
+        icon: '🌈', cat: 'Personnel', catColor: '#f472b6',
+        neon: '#f472b6', neon2: '#a78bfa',
+        title: 'Mood Météo Féérique',
+        tags: ['JavaScript', 'Firebase Realtime DB', 'Canvas API', 'LocalStorage'],
+        about: `<p>Application web collaborative et féérique pour suivre l'humeur en temps réel de <strong>3 amies (Mimi, Sisou, Zaynabou)</strong>. Chaque amie peut mettre à jour son "mood" de 0 à 100 avec une étiquette et un emoji, visible instantanément par les autres via Firebase. Fallback localStorage si Firebase n'est pas configuré.</p>`,
+        how: `<ul>
+          <li><strong>HTML/CSS/JavaScript vanilla</strong>, aucun framework</li>
+          <li><strong>Firebase Realtime Database</strong> : synchronisation temps réel entre navigateurs via listeners <code>on('value')</code></li>
+          <li>Fallback <strong>localStorage</strong> complet si Firebase non configuré (mode solo)</li>
+          <li><strong>Canvas API</strong> : 80 particules féériques animées (étoiles à 5 branches et cercles colorés) qui montent en boucle</li>
+          <li>Confettis JS générés dynamiquement (30 éléments CSS avec animation <code>@keyframes</code>) à chaque sauvegarde</li>
+          <li>Toast notifications en CSS pur pour les confirmations</li>
+        </ul>`,
+        contains: `<ul>
+          <li><strong>Dashboard</strong> : 3 cartes-amies avec avatar emoji, barre de progression animée, étiquette de mood (10 niveaux : de "💀 Je suis morte" à "✨ Je frôle le paradis")</li>
+          <li><strong>Modal d'édition</strong> : slider 0–100, grille de 20 emojis sélectionnables, étiquette dynamique</li>
+          <li><strong>Page Mood du Moment</strong> : publication de "moments" avec émoji et message texte, flux chronologique</li>
+          <li>Badge 🔴 LIVE quand Firebase est actif</li>
+          <li>Suppression des moments (Firebase ou localStorage)</li>
+          <li>20 étoiles déCoratives CSS animées en arrière-plan</li>
+        </ul>`,
+        links: []
+      }
+    };
+
+    // ── FILTRES ──────────────────────────────────────────────────
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.proj-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.className = 'filter-btn');
+        const cat = btn.dataset.cat;
+        if (cat === 'all') btn.classList.add('active-all');
+        else if (cat === 'pro') btn.classList.add('active-pro');
+        else if (cat === 'ecole') btn.classList.add('active-ecole');
+        else if (cat === 'perso') btn.classList.add('active-perso');
+
+        cards.forEach(card => {
+          if (cat === 'all' || card.dataset.cat === cat) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // ── MODAL ────────────────────────────────────────────────────
+    const overlay   = document.getElementById('modalOverlay');
+    const closeBtn  = document.getElementById('modalClose');
+    const modalBand = document.getElementById('modalBand');
+
+    function openModal(id) {
+      const p = PROJECTS[id];
+      if (!p) return;
+
+      // Remplir le contenu
+      document.getElementById('modalIcon').textContent  = p.icon;
+      document.getElementById('modalTitle').textContent = p.title;
+      document.getElementById('modalTitle').style.color = p.neon;
+
+      const catEl = document.getElementById('modalCat');
+      catEl.textContent  = p.cat;
+      catEl.style.color  = p.catColor;
+      catEl.style.border = `1px solid ${p.catColor}`;
+
+      modalBand.style.background = `linear-gradient(90deg, ${p.neon}, ${p.neon2})`;
+      modalBand.style.boxShadow  = `0 0 16px ${p.neon}`;
+
+      const tagsEl = document.getElementById('modalTags');
+      tagsEl.innerHTML = p.tags.map(t => `<span class="p-tag">${t}</span>`).join('');
+
+      document.getElementById('modalAbout').innerHTML    = p.about;
+      document.getElementById('modalHow').innerHTML      = p.how;
+      document.getElementById('modalContains').innerHTML = p.contains;
+
+      const linksEl = document.getElementById('modalLinks');
+      linksEl.innerHTML = '';
+      if (p.links && p.links.length) {
+        p.links.forEach(l => {
+          const a = document.createElement('a');
+          a.href      = l.href;
+          a.textContent = l.label + ' →';
+          a.className = 'modal-link-btn';
+          a.style.color       = p.neon;
+          a.style.borderColor = p.neon;
+          if (!l.internal) a.target = '_blank';
+          linksEl.appendChild(a);
+        });
+      }
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      // Scroll to top of modal
+      document.querySelector('.modal-scroll').scrollTop = 0;
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Clic sur une carte
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        openModal(card.dataset.project);
+      });
+    });
+
+    // Fermeture
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) closeModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ── NAV ACTIVE ───────────────────────────────────────────────
+    const cur = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a, #mobile-menu a').forEach(l => {
+      if (l.getAttribute('href') === cur) l.classList.add('active');
+    });
+  </script>
+</body>
+</html>

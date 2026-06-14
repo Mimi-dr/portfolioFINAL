@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veille Techno — Myriam Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --nav-height: 64px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #f5f0e8; color: #1c1410; overflow-x: hidden; }
+
+    /* NAVBAR */
+    #main-nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height); z-index: 9999; backdrop-filter: blur(16px); background: rgba(245,240,232,0.9); border-bottom: 1px solid rgba(28,20,16,0.12); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; height: 100%; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Cinzel Decorative', serif; font-size: 1.05rem; background: linear-gradient(90deg, #f9a96e, #f472b6, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 0.15rem; list-style: none; }
+    .nav-links a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(28,20,16,0.45); text-decoration: none; padding: 0.3rem 0.65rem; border-radius: 999px; transition: all 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: #92400e; background: rgba(251,191,36,0.15); }
+    #nav-toggle { display: none; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: rgba(28,20,16,0.6); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    #mobile-menu { display: none; position: fixed; top: var(--nav-height); left: 0; right: 0; background: rgba(245,240,232,0.97); border-bottom: 1px solid rgba(28,20,16,0.1); padding: 1rem 2rem 1.5rem; z-index: 9998; flex-direction: column; gap: 0.2rem; }
+    #mobile-menu a { font-size: 0.9rem; color: rgba(28,20,16,0.7); text-decoration: none; padding: 0.55rem 0.75rem; border-radius: 8px; transition: background 0.2s; }
+    #mobile-menu a:hover { background: rgba(251,191,36,0.12); color: #92400e; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; } .hamburger { display: flex; }
+      #nav-toggle:checked ~ #mobile-menu { display: flex; }
+      #nav-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      #nav-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+      #nav-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
+
+    /* ── EN-TÊTE JOURNAL ── */
+    .journal-header {
+      padding-top: var(--nav-height);
+      background: #f5f0e8;
+      border-bottom: 3px solid #1c1410;
+      padding-bottom: 0;
+    }
+    .journal-top {
+      max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 1.5rem;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .journal-date { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(28,20,16,0.4); margin-bottom: 0.5rem; }
+    .journal-rule { width: 100%; height: 1px; background: #1c1410; margin: 0.75rem 0; }
+    .journal-title {
+      font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 5.5rem);
+      font-weight: 900; letter-spacing: -0.02em; line-height: 1;
+      color: #1c1410; margin: 0.5rem 0;
+    }
+    .journal-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: rgba(28,20,16,0.5); margin-bottom: 0.75rem; }
+    .journal-tagline {
+      font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 1rem; color: rgba(28,20,16,0.4);
+    }
+    .journal-tagline span { width: 1px; height: 12px; background: rgba(28,20,16,0.25); }
+
+    /* Bannière couleur sous le header */
+    .journal-banner {
+      background: #1c1410; color: #f5f0e8;
+      padding: 0.4rem 2rem; text-align: center;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;
+    }
+    .banner-tag { padding: 0.15rem 0.75rem; border-radius: 999px; font-size: 0.68rem; font-weight: 500; }
+    .banner-tag.bi { background: #f472b6; color: #fff; }
+    .banner-tag.cyber { background: #22d3ee; color: #1c1410; }
+    .banner-tag.dev { background: #4ade80; color: #1c1410; }
+    .banner-tag.ia { background: #c084fc; color: #fff; }
+
+    /* ── CONTENU ── */
+    .content-wrap { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+    /* Featured article (gros) */
+    .featured {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      border: 1px solid rgba(28,20,16,0.15); border-radius: 0; overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 768px) { .featured { grid-template-columns: 1fr; } }
+
+    .featured-img {
+      background: linear-gradient(135deg, #1c1410 0%, #3d2b1f 100%);
+      min-height: 280px; display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; position: relative; overflow: hidden;
+    }
+    .featured-img img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.45;
+      transition: opacity 0.4s, transform 0.6s;
+    }
+    .featured-img:hover img { opacity: 0.6; transform: scale(1.04); }
+    .featured-img span { position: relative; z-index: 2; filter: drop-shadow(0 4px 20px rgba(0,0,0,0.9)); }
+    .featured-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 40% 40%, rgba(244,114,182,0.25), transparent 60%);
+    }
+    .featured-body {
+      background: #fff; padding: 2rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .art-cat { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .art-title-lg { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 700; color: #1c1410; line-height: 1.25; margin-bottom: 0.75rem; }
+    .art-desc { font-size: 0.85rem; color: rgba(28,20,16,0.6); line-height: 1.7; margin-bottom: 1.25rem; }
+    .art-meta { display: flex; align-items: center; gap: 0.75rem; font-size: 0.72rem; color: rgba(28,20,16,0.4); }
+    .art-meta-sep { width: 1px; height: 10px; background: rgba(28,20,16,0.2); }
+    .art-link { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; padding: 0.5rem 1.25rem; border: 1px solid rgba(28,20,16,0.3); color: #1c1410; border-radius: 4px; transition: all 0.2s; display: inline-block; margin-top: 1rem; }
+    .art-link:hover { background: #1c1410; color: #f5f0e8; }
+
+    /* Séparateur journal */
+    .rule-double { border-top: 3px double rgba(28,20,16,0.25); margin: 2rem 0; }
+    .section-head {
+      font-family: 'Playfair Display', serif; font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: rgba(28,20,16,0.4);
+      text-align: center; margin: 1.5rem 0 1.5rem; position: relative;
+    }
+    .section-head::before, .section-head::after { content: '—'; margin: 0 0.75rem; }
+
+    /* Grille d'articles */
+    .articles-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+    }
+    .articles-grid .art-card:last-child:nth-child(odd) {
+      grid-column: 1 / -1; max-width: calc(50% - 0.5rem);
+    }
+    @media (max-width: 640px) {
+      .articles-grid { grid-template-columns: 1fr; }
+      .articles-grid .art-card:last-child:nth-child(odd) { grid-column: auto; max-width: 100%; }
+    }
+    .art-card {
+      background: #fff; border: 1px solid rgba(28,20,16,0.1);
+      padding: 0; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .art-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(28,20,16,0.1); }
+    .art-card-img {
+      height: 160px; display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; position: relative; overflow: hidden;
+    }
+    .art-card-img img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.5; transition: opacity 0.3s, transform 0.5s;
+    }
+    .art-card:hover .art-card-img img { opacity: 0.7; transform: scale(1.06); }
+    .art-card-img span { position: relative; z-index: 2; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.9)); }
+    .art-card-body { padding: 1.25rem; border-top: 2px solid var(--accent, #f472b6); }
+    .art-card-cat { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent, #f472b6); margin-bottom: 0.5rem; }
+    .art-card-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #1c1410; line-height: 1.3; margin-bottom: 0.5rem; }
+    .art-card-desc { font-size: 0.78rem; color: rgba(28,20,16,0.55); line-height: 1.6; margin-bottom: 0.75rem; }
+    .art-card-meta { font-size: 0.68rem; color: rgba(28,20,16,0.35); letter-spacing: 0.04em; }
+
+    /* FOOTER */
+    footer { background: #1c1410; border-top: 3px solid #1c1410; padding: 2.5rem 2rem; text-align: center; }
+    .footer-logo { font-family: 'Cinzel Decorative', serif; font-size: 1rem; background: linear-gradient(90deg, #f9a96e, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.75rem; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; list-style: none; margin: 0.75rem 0; }
+    .footer-links a { font-size: 0.72rem; color: rgba(245,240,232,0.3); text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: #fbbf24; }
+    footer p { font-size: 0.72rem; color: rgba(245,240,232,0.2); }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="main-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Myriam.dev</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="presentation.html">Présentation</a></li>
+        <li><a href="entreprise.html">Entreprise</a></li>
+        <li><a href="projets.html">Projets</a></li>
+        <li><a href="veille.html" class="active">Veille</a></li>
+        <li><a href="competences.html">Compétences</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="documents.html">Documents</a></li>
+      </ul>
+      <input type="checkbox" id="nav-toggle" style="display:none" />
+      <label for="nav-toggle" class="hamburger"><span></span><span></span><span></span></label>
+    </div>
+    <div id="mobile-menu">
+      <a href="index.html">Accueil</a><a href="presentation.html">Présentation</a>
+      <a href="entreprise.html">Entreprise</a><a href="projets.html">Projets</a>
+      <a href="veille.html">Veille techno</a><a href="competences.html">Compétences</a>
+      <a href="contact.html">Contact</a>
+      <a href="documents.html">Documents</a>
+    </div>
+  </nav>
+
+  <!-- EN-TÊTE JOURNAL -->
+  <header class="journal-header">
+    <div class="journal-top">
+      <div class="journal-date" id="journalDate">— Veille Technologique BTS SIO —</div>
+      <div class="journal-rule"></div>
+      <h1 class="journal-title">Mimi Breaking News</h1>
+      <p class="journal-sub">La veille IT de Myriam </p>
+      <div class="journal-rule"></div>
+      <div class="journal-tagline">
+        
+      </div>
+    </div>
+    <div class="journal-banner">
+      <span>Catégories :</span>
+      <span class="banner-tag ia">IA Générative</span>
+      <span class="banner-tag cyber">Cybersécurité</span>
+      <span class="banner-tag dev">Développement</span>
+      <span class="banner-tag bi">Solutions Métier</span>
+      <span class="banner-tag" style="background:#fb923c;color:#fff;">Tech 2026</span>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <main class="content-wrap">
+
+    <!-- Article featured — IA 2026 -->
+    <div class="featured">
+      <div class="featured-img" style="background:linear-gradient(135deg,#1e1035,#4c1d95,#2e1065);">
+        <img src="assets/veille/t%C3%A9l%C3%A9chargement.jpg" alt="Anthropic Claude IA" />
+        <span></span>
+      </div>
+      <div class="featured-body">
+        <div>
+          <div class="art-cat" style="color:#c084fc;">Intelligence Artificielle · À la une</div>
+          <h2 class="art-title-lg">Agents IA Autonomes : Claude, GPT-5 et Gemini 2.0 réinventent le monde du travail en 2026</h2>
+          <p class="art-desc">
+            2026 marque l'avènement des agents IA capables de gérer des tâches complexes de bout en bout :
+            recherche, rédaction, analyse de données, navigation web, écriture et revue de code.
+            Claude 4 Opus d'Anthropic, GPT-5 d'OpenAI et Gemini 2.0 Ultra de Google atteignent des performances
+            inédites sur les benchmarks professionnels. En entreprise, des "équipes" d'agents IA collaborent
+            en production, réduisant les délais sur certains projets de 60 à 70 %. L'IA générative n'est plus
+            un assistant passif : elle raisonne, planifie et agit de manière autonome.
+          </p>
+          <div class="art-meta">
+            <span>Anthropic · OpenAI · Google</span><span class="art-meta-sep"></span>
+            <span>Juin 2026</span><span class="art-meta-sep"></span>
+            <span>IA Générative &amp; Agents</span>
+          </div>
+        </div>
+        <a href="https://www.anthropic.com/claude" target="_blank" class="art-link">Lire la source →</a>
+      </div>
+    </div>
+
+    <div class="rule-double"></div>
+    <div class="section-head">Articles récents — 2026</div>
+
+    <!-- Grille 5 articles -->
+    <div class="articles-grid">
+
+      <!-- IA — Comparaison modèles -->
+      <div class="art-card" style="--accent:#c084fc;">
+        <div class="art-card-img" style="background:linear-gradient(135deg,#1e1035,#3b0764);">
+          <img src="assets/veille/Claude-3-vs-Gemini-vs-GPT-4.jpg" alt="Claude vs Gemini vs GPT comparaison" />
+          <span></span>
+        </div>
+        <div class="art-card-body">
+          <div class="art-card-cat">Intelligence Artificielle</div>
+          <div class="art-card-title">Claude 4 vs GPT-5 vs Gemini 2.0 : quel modèle IA domine en 2026 ?</div>
+          <div class="art-card-desc">
+            Les trois géants de l'IA se livrent une bataille de benchmarks sans précédent. Claude 4 Opus excelle
+            en raisonnement et sécurité, GPT-5 domine le multimodal, Gemini 2.0 s'intègre nativement à Google
+            Workspace. Le choix du bon modèle dépend désormais du cas d'usage métier précis.
+          </div>
+          <div class="art-card-meta">Anthropic · OpenAI · Google DeepMind · 2026</div>
+        </div>
+      </div>
+
+      <!-- Cybersécurité -->
+      <div class="art-card" style="--accent:#22d3ee;">
+        <div class="art-card-img" style="background:linear-gradient(135deg,#020617,#0c2a40,#164e63);">
+          <img src="assets/veille/lockbit-sevit-encore-vaste-campagne-ransomware-via-botnet-phorpiex.jpg" alt="LockBit ransomware cybersécurité 2026" />
+          <span></span>
+        </div>
+        <div class="art-card-body">
+          <div class="art-card-cat">Cybersécurité</div>
+          <div class="art-card-title">Ransomware-IA et LockBit : le nouveau visage des cybermenaces en 2026</div>
+          <div class="art-card-desc">
+            Les cybercriminels exploitent l'IA générative pour automatiser des attaques de phishing ultra-ciblées.
+            LockBit et ses successeurs déploient des ransomwares adaptatifs via des botnets comme Phorpiex.
+            L'ANSSI recommande la cryptographie post-quantique et l'adoption du Zero Trust pour contrer ces menaces.
+          </div>
+          <div class="art-card-meta">ANSSI · ENISA · EU AI Act · 2026</div>
+        </div>
+      </div>
+
+      <!-- Développement -->
+      <div class="art-card" style="--accent:#4ade80;">
+        <div class="art-card-img" style="background:linear-gradient(135deg,#021a0e,#052e16,#14532d);">
+          <img src="assets/veille/vibe-coding.webp" alt="Vibe Coding développement assisté IA" />
+          <span></span>
+        </div>
+        <div class="art-card-body">
+          <div class="art-card-cat">Développement</div>
+          <div class="art-card-title">Vibe Coding et IDE IA : la révolution silencieuse du développement logiciel</div>
+          <div class="art-card-desc">
+            En 2026, plus de 78 % des développeurs utilisent en permanence un assistant IA (Cursor, GitHub Copilot,
+            Claude Code). Décrire ses intentions en langage naturel pour générer du code devient la norme.
+            Les équipes livrent 2× plus vite, mais la revue de code et les tests restent des compétences clés.
+          </div>
+          <div class="art-card-meta">Stack Overflow Survey · GitHub · 2026</div>
+        </div>
+      </div>
+
+      <!-- Solutions logiciels métier -->
+      <div class="art-card" style="--accent:#f9a96e;">
+        <div class="art-card-img" style="background:linear-gradient(135deg,#1c0a00,#431407,#7c2d12);">
+          <img src="assets/veille/customer-relationship-management-market-1750937217652-major-players.webp" alt="CRM ERP marché logiciels métier" />
+          <span></span>
+        </div>
+        <div class="art-card-body">
+          <div class="art-card-cat">Solutions Logiciels Métier</div>
+          <div class="art-card-title">ERP et CRM IA-natifs : Microsoft, SAP et Salesforce passent en mode copilote</div>
+          <div class="art-card-desc">
+            Dynamics 365 Copilot, SAP Business AI et Salesforce Agentforce automatisent en 2026 des processus
+            métier complets : commandes, facturation, support client. Power Platform low-code permet aux entreprises
+            de créer leurs propres solutions sans équipe de dev, réduisant les coûts de 25 à 40 %.
+          </div>
+          <div class="art-card-meta">Gartner · Microsoft · SAP · 2026</div>
+        </div>
+      </div>
+
+      <!-- Nouvelles technologies 2026 -->
+      <div class="art-card" style="--accent:#fb923c;">
+        <div class="art-card-img" style="background:linear-gradient(135deg,#0c0500,#431c06,#7c3a0a);">
+          <img src="assets/veille/WEENEO-consultant-IOT-EDGE-QUANTUM.png" alt="IoT Edge Quantum computing nouvelles tech 2026" />
+          <span></span>
+        </div>
+        <div class="art-card-body">
+          <div class="art-card-cat">Nouvelles Technologies 2026</div>
+          <div class="art-card-title">IoT, Edge Computing et Quantique : les technologies qui redéfinissent 2026</div>
+          <div class="art-card-desc">
+            Google Willow et IBM Quantum System Two franchissent des jalons décisifs en correction d'erreurs
+            quantiques. L'Edge Computing traite les données IA au plus près des capteurs IoT, avec une latence
+            de quelques millisecondes. Ces trois technologies convergent pour les usines intelligentes et les
+            villes connectées.
+          </div>
+          <div class="art-card-meta">Google Research · IBM · Weeneo · 2026</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Myriam.dev</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="presentation.html">Présentation</a></li>
+      <li><a href="projets.html">Projets</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <p>© 2026 Myriam BTS SIO SLAM </p>
+  </footer>
+
+  <script>
+    // Date du jour dans l'en-tête
+    const d = new Date();
+    const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+    document.getElementById('journalDate').textContent = d.toLocaleDateString('fr-FR', opts);
+
+    // Lien actif
+    const cur = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a, #mobile-menu a').forEach(l => {
+      if (l.getAttribute('href') === cur) l.classList.add('active');
+    });
+  </script>
+</body>
+</html>
